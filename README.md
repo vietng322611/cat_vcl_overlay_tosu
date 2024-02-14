@@ -1,9 +1,8 @@
-# VCL Tournament Overlay - Lazer edition by Try-Z (modified for use with CAT)
+# [VCL Tournament Overlay](https://github.com/vncommunityleague/vcl-tournament-overlay) (modified for use in CAT)
 
 ## Setup guide:
-- Install Gosumemory (duh)
-- Download this repo as .zip and extract to `static` folder of Gosumemory
-- Update mappool by changing IDs in `mappool\mappool.json`.
+- Download [gosumemory](https://github.com/l3lackShark/gosumemory/releases/latest)
+- Download this repo as .zip and extract to `static` folder inside gosumemory's folder
 
 ## Styling
 - TODO: Proper mod icon
@@ -13,7 +12,7 @@
 ## Overlay interaction (in OBS)
 - Add a browser source in OBS:
 	- size: `2420x1080`
- 	- URL: `127.0.0.1:24050/vcl-tournament-overlay` 
+ 	- URL: `127.0.0.1:24050/cat_vcl_overlay` 
 - Below the preview, you should see an `Interact` button. Click on that to interact with the overlay.
 - Picks: Left click for P1, right click for P2
 - Bans: Shift + Left click for P1, Shift + Right click for P2
@@ -30,3 +29,6 @@
 - To trigger the auto-switching between gameplay and mappool, **the score announce message must contain `Next Pick: ...` phrase (case sensitive).** Of course with some code digging you can find where to change this.
 - If the players' avatars are not visible, spam Refresh in OBS.
 
+## Special thanks
+- [[Boy]DaLat](https://osu.ppy.sh/users/8266808) - @fukutotojido
+- [Hoaq](https://osu.ppy.sh/users/7696512) - @itsmehoaq
