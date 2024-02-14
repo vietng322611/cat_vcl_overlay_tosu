@@ -74,10 +74,10 @@ let tempLastPick = "Blue";
 
 const mods = {
     NM: 0,
-    HD: 1,
-    HR: 2,
-    DT: 3,
-    FM: 4,
+    HR: 1,
+    DT: 2,
+    FM: 3,
+    RX: 4,
     TB: 5,
 };
 
@@ -194,7 +194,7 @@ async function setupBeatmaps() {
 
     const modsCount = {
         NM: 0,
-        HD: 0,
+        RX: 0,
         HR: 0,
         DT: 0,
         FM: 0,
@@ -277,8 +277,8 @@ async function setupBeatmaps() {
         const mapData = await getDataSet(beatmap.beatmapId);
         bm.map.style.backgroundImage = `url('${mapData.coverURL}')`;
         bm.metadata.innerHTML = mapData.artist + " - " + mapData.title;
-        bm.difficulty.innerHTML =
-            `[${mapData.version}]` + "&emsp;&emsp;Mapper: " + mapData.creator;
+        bm.difficulty.innerHTML = `[${mapData.version}]` + "&emsp;mapped by " + mapData.creator
+        //    `[${mapData.version}]` + "&emsp;&emsp;Mapper: " + mapData.creator;
         beatmaps.add(bm);
     });
 }
