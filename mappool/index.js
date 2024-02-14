@@ -277,7 +277,7 @@ async function setupBeatmaps() {
         const mapData = await getDataSet(beatmap.beatmapId);
         bm.map.style.backgroundImage = `url('${mapData.coverURL}')`;
         bm.metadata.innerHTML = mapData.artist + " - " + mapData.title;
-        bm.difficulty.innerHTML = `[${mapData.version}]` + "&emsp;mapped by " + mapData.creator
+        bm.difficulty.innerHTML = `[${mapData.version}]` + "&emsp;mapped by " + `[${mapData.creator}]`
         //    `[${mapData.version}]` + "&emsp;&emsp;Mapper: " + mapData.creator;
         beatmaps.add(bm);
     });
