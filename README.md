@@ -1,20 +1,12 @@
-# VCL Tournament Overlay - Lazer edition by Try-Z
-
-This overlay is helpful for those that likes the look of Lazer overlay, but doesn't want to go through the complicated setup steps. As a bonus, this overlay has support for Accuracy win condition, which the default Lazer client cannot do as of the time this repo is updated.
-For the time being, only Gameplay and Mappool scene is included.
-
-[**How the overlay looks like (with a bit of CSS modification)**](https://www.twitch.tv/videos/1445278730?collection=vyL2iPlp4xYysw&t=00h11m56s)
+# VCL Tournament Overlay - Lazer edition by Try-Z (modified for use with CAT)
 
 ## Setup guide:
 - Install Gosumemory (duh)
 - Download this repo as .zip and extract to `static` folder of Gosumemory
-- Rename either `index_acc.js` or `index_score.js` to `index.js`, depends on which win condition you are using.
-- Put your APIv1 key in `api.json`
 - Update mappool by changing IDs in `mappool\mappool.json`.
-- Change mod icons in `mappool\static` folder
-- Change background in `static` folder (`mp-bg` for Gameplay, `mp-bg2` for Mappool)
 
 ## Styling
+- TODO: Proper mod icon
 - Most colors can be found in `css\style.css`
 - For P1/P2 score, change hex code in `index.js` (Line `253` for P1 and line `266` for P2)
 
@@ -37,7 +29,4 @@ For the time being, only Gameplay and Mappool scene is included.
 ## Additional notes
 - To trigger the auto-switching between gameplay and mappool, **the score announce message must contain `Next Pick: ...` phrase (case sensitive).** Of course with some code digging you can find where to change this.
 - If the players' avatars are not visible, spam Refresh in OBS.
-- **This overlay only support 1v1 format.** TeamVS could work, but there will be a default avatar as placeholder.
-___
-For additional support, DM `hoaq#6054` on Discord (or ping in osu! Tournament Hub).
-Credit is not required but it would help us :D 
+
