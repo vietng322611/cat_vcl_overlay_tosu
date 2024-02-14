@@ -5,7 +5,6 @@
 - Download this repo as .zip and extract to `static` folder inside gosumemory's folder
 
 ## Styling
-- TODO: Proper mod icon
 - Most colors can be found in `css\style.css`
 - For P1/P2 score, change hex code in `index.js` (Line `253` for P1 and line `266` for P2)
 
