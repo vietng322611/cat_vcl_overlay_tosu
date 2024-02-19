@@ -417,10 +417,6 @@ toPool.addEventListener("click", () => {
     togglePool(true);
 });
 
-// toPoolB.addEventListener("click", () => {
-//     togglePool("2");
-// });
-
 refresh.addEventListener("click", () => {
     [].forEach.call(document.querySelectorAll("[name*=picker]"), (ifr) => {
         ifr.contentWindow.location.reload(true);
