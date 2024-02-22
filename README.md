@@ -3,7 +3,7 @@
 ## Setup guide:
 - Download [gosumemory](https://github.com/l3lackShark/gosumemory/releases/latest)
 - Download this repo as .zip and extract to `static` folder inside gosumemory's folder
-- FOR PLAYER/TEAM AVATAR: Put <name>.png inside static/ava. Other extension can work but you will need to edit in index.js
+- FOR PLAYER/TEAM AVATAR: Put .png inside `static/ava`. Other extension can work but you will need to edit in index.js
 
 ## Styling
 - Most colors can be found in `css\style.css`
@@ -12,7 +12,7 @@
 ## Overlay interaction (in OBS)
 - Add a browser source in OBS:
 	- size: `2420x1080`
- 	- URL: `127.0.0.1:24050/cat_vcl_overlay` 
+ 	- URL: `127.0.0.1:24050/cat_vcl_overlay_master`
 - Below the preview, you should see an `Interact` button. Click on that to interact with the overlay.
 - Picks: Left click for P1, right click for P2
 - Bans: Shift + Left click for P1, Shift + Right click for P2
