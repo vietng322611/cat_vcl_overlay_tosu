@@ -32,7 +32,6 @@ let avaSet = 0;
 // State Toggler
 let toGameplay = document.getElementById("toGameplay");
 let toPool = document.getElementById("toPool");
-// let toPoolB = document.getElementById("toPoolB");
 let refresh = document.getElementById("refreshiFrame");
 let overlayState = 0; // 0 = Gameplay, 1 = BanPick
 let tempOverlayState = 0;
@@ -271,8 +270,8 @@ socket.onmessage = (event) => {
 
     if (!avaSet && tournamentDebugger === 0) {
         avaSet = 1;
-        // setAvatar(avaLeft, team1);
-        // setAvatar(avaRight, team2);
+        setAvatar(avaLeft, team1);
+        setAvatar(avaRight, team2);
     }
 
     if (scoreVisibleTemp) {
@@ -423,6 +422,14 @@ refresh.addEventListener("click", () => {
     });
     togglePool(true);
 });
+
+async function setAvatar(element, username) {
+    if (username !== null) {
+        element.style.backgroundImage = `url("ava/${username}.png")`;
+    } else {
+        element.style.backgroundImage = `url("static/default.png")`;
+    }
+}
 
 togglePool = (state) => {
     if (state) {
