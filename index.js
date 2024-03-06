@@ -24,11 +24,6 @@ let deltaBarR = document.getElementById("deltaBarR");
 // Chats
 let chats = document.getElementById("chats");
 
-// Avatar
-let avaLeft = document.getElementById("avatarLeft");
-let avaRight = document.getElementById("avatarRight");
-let avaSet = 0;
-
 // State Toggler
 let toGameplay = document.getElementById("toGameplay");
 let toPool = document.getElementById("toPool");
@@ -268,12 +263,6 @@ socket.onmessage = (event) => {
         teamRightName.innerHTML = teamNameRightTemp;
     }
 
-    if (!avaSet && tournamentDebugger === 0) {
-        avaSet = 1;
-        setAvatar(avaLeft, team1);
-        setAvatar(avaRight, team2);
-    }
-
     if (scoreVisibleTemp) {
         let accLeft = 0.0;
         let accRight = 0.0;
@@ -422,14 +411,6 @@ refresh.addEventListener("click", () => {
     });
     togglePool(true);
 });
-
-async function setAvatar(element, username) {
-    if (username !== null) {
-        element.style.backgroundImage = `url("ava/${username}.png")`;
-    } else {
-        element.style.backgroundImage = `url("static/default.png")`;
-    }
-}
 
 togglePool = (state) => {
     if (state) {
