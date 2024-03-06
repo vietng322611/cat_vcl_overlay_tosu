@@ -369,7 +369,9 @@ socket.onmessage = (event) => {
                 chatName.innerText = data.tourney.manager.chat[i].name + ":\xa0";
                 chatText.innerText = data.tourney.manager.chat[i].messageBody;
 
-                if (data.tourney.manager.chat[i].messageBody.includes("Next Pick")) togglePool(true);
+                if (data.tourney.manager.chat[i].messageBody.includes("Next Pick")) {
+                    setTimeout(togglePool(true), 15000);
+                }
 
                 chatName.classList.add(tempClass);
 
