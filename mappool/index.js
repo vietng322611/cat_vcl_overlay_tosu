@@ -9,7 +9,7 @@ window.addEventListener("contextmenu", (e) => e.preventDefault());
 });*/
 
 // START
-let socket = new ReconnectingWebSocket("ws://127.0.0.1:24050/ws");
+let socket = new ReconnectingWebSocket("ws://127.0.0.1:24050/websocket/v2");
 let axios = window.axios;
 let user = {};
 
@@ -150,31 +150,31 @@ socket.onmessage = async (event) => {
     let data = JSON.parse(event.data);
 
     if (
-        team1 !== data.tourney.manager.teamName.left &&
-        team2 !== data.tourney.manager.teamName.right
+        team1 !== data.tourney.team.left &&
+        team2 !== data.tourney.team.right
     ) {
         if (
-            data.tourney.manager.teamName.left !== "" &&
-            data.tourney.manager.teamName.right !== ""
+            data.tourney.team.left !== "" &&
+            data.tourney.team.right!== ""
         ) {
-            team1 = data.tourney.manager.teamName.left;
-            team2 = data.tourney.manager.teamName.right;
+            team1 = data.tourney.team.left;
+            team2 = data.tourney.team.right;
         }
     }
 
     if (!hasSetup) setupBeatmaps();
 
-    if (tempMapID !== data.menu.bm.id) {
-        tempMapID = data.menu.bm.id;
+    if (tempMapID !== data.id) {
+        tempMapID = data.id;
         pickedOnManual(tempMapID);
     }
 
-    if (teamNameLeftTemp !== data.tourney.manager.teamName.left) {
-        teamNameLeftTemp = data.tourney.manager.teamName.left;
+    if (teamNameLeftTemp !== data.tourney.team.left) {
+        teamNameLeftTemp = data.tourney.team.left;
         pickButtonR.innerHTML = teamNameLeftTemp;
     }
-    if (teamNameRightTemp !== data.tourney.manager.teamName.right) {
-        teamNameRightTemp = data.tourney.manager.teamName.right;
+    if (teamNameRightTemp !== data.tourney.team.right) {
+        teamNameRightTemp = data.tourney.team.right;
         pickButtonB.innerHTML = teamNameRightTemp;
     }
 };

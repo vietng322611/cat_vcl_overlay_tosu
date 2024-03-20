@@ -1,7 +1,7 @@
 // const queryString = window.location.search;
 // const urlParams = new URLSearchParams(queryString);
 
-let socket = new ReconnectingWebSocket("ws://127.0.0.1:24050/ws");
+let socket = new ReconnectingWebSocket("ws://127.0.0.1:24050/websocket/v2");
 let mapid = document.getElementById("mapid");
 let axios = window.axios;
 let user = {};
@@ -23,6 +23,11 @@ let deltaBarR = document.getElementById("deltaBarR");
 
 // Chats
 let chats = document.getElementById("chats");
+
+// Avatar
+let avaLeft = document.getElementById("avatarLeft");
+let avaRight = document.getElementById("avatarRight");
+let avaSet = 0;
 
 // State Toggler
 let toGameplay = document.getElementById("toGameplay");
@@ -124,13 +129,14 @@ socket.onmessage = (event) => {
             iFrameInitiate();
         }
     }, 1000);
+
     if (
-        scoreVisibleTemp !== data.tourney.manager.bools.scoreVisible ||
+        scoreVisibleTemp !== data.tourney.scoreVisible ||
         tempOverlayState !== overlayState ||
         tempTournamentDebugger !== tournamentDebugger
     ) {
         tempTournamentDebugger = tournamentDebugger;
-        if (tournamentDebugger === 0) scoreVisibleTemp = data.tourney.manager.bools.scoreVisible;
+        if (tournamentDebugger === 0) scoreVisibleTemp = data.tourney.scoreVisible;
         else scoreVisibleTemp = true;
         tempOverlayState = overlayState;
         if (scoreVisibleTemp === true) {
@@ -159,8 +165,9 @@ socket.onmessage = (event) => {
             }
         }
     }
-    if (starsVisibleTemp !== data.tourney.manager.bools.starsVisible) {
-        starsVisibleTemp = data.tourney.manager.bools.starsVisible;
+
+    if (starsVisibleTemp !== data.tourney.tarsVisible) {
+        starsVisibleTemp = data.tourney.tarsVisible;
         if (starsVisibleTemp) {
             document.getElementById("scoreContainerLeft").style.opacity = "1";
             document.getElementById("scoreContainerRight").style.opacity = "1";
@@ -169,29 +176,30 @@ socket.onmessage = (event) => {
             document.getElementById("scoreContainerRight").style.opacity = "0";
         }
     }
-    if (tempImg !== data.menu.bm.path.full) {
-        tempImg = data.menu.bm.path.full;
-        data.menu.bm.path.full = data.menu.bm.path.full.replace(/#/g, "%23").replace(/%/g, "%25").replace(/\\/g, "/").replace(/'/g, "%27");
-        nowPlayingContainer.style.backgroundImage = `url('http://127.0.0.1:24050/Songs/${data.menu.bm.path.full}?a=${Math.random(10000)}')`;
-    }
-    if (tempMapID !== data.menu.bm.id || tempSR !== data.menu.bm.stats.fullSR || tempLength !== data.menu.bm.time.full) {
-        tempMapID = data.menu.bm.id;
-        tempMapArtist = data.menu.bm.metadata.artist;
-        tempMapTitle = data.menu.bm.metadata.title;
-        tempMapDiff = data.menu.bm.metadata.difficulty;
-        tempMapper = data.menu.bm.metadata.mapper;
 
-        tempCS = data.menu.bm.stats.CS;
-        tempAR = data.menu.bm.stats.AR;
-        tempOD = data.menu.bm.stats.OD;
-        tempHP = data.menu.bm.stats.HP;
-        tempSR = data.menu.bm.stats.fullSR;
-        tempLength = data.menu.bm.time.full;
+    if (tempMapID !== data.beatmap.id) {
+        let tempImgPath = data.folders.beatmap + '/' + data.files.background;
+        nowPlayingContainer.style.backgroundImage = `url('http://127.0.0.1:24050/Songs/${tempImgPath.replace(/ /g, "%20")}')`;
+    }
+
+    if (tempMapID !== data.beatmap.id || tempSR !== data.beatmap.stats.stars.total || tempLength !== data.beatmap.time.lastObject) {
+        tempMapID = data.beatmap.id;
+        tempMapArtist = data.beatmap.artist;
+        tempMapTitle = data.beatmap.title;
+        tempMapDiff = data.beatmap.version;
+        tempMapper = data.beatmap.mapper;
+
+        tempCS = data.beatmap.stats.cs.converted;
+        tempAR = data.beatmap.stats.ar.converted;
+        tempOD = data.beatmap.stats.od.converted;
+        tempHP = data.beatmap.stats.hp.converted;
+        tempSR = data.beatmap.stats.stars.total;
+        tempLength = data.beatmap.time.lastObject;
         let convertedLength = new Date(tempLength);
         convertedLength = toMins(convertedLength);
 
-        tempBPM = data.menu.bm.stats.BPM.max;
-        if (data.menu.bm.stats.BPM.max !== data.menu.bm.stats.BPM.min) tempBPM = `${data.menu.bm.stats.BPM.min} - ${data.menu.bm.stats.BPM.max}`;
+        tempBPM = data.beatmap.stats.bpm.max;
+        if (data.beatmap.stats.bpm.max !== data.beatmap.stats.bpm.min) tempBPM = `${data.beatmap.stats.bpm.min} - ${data.beatmap.stats.bpm.max}`;
 
         mapName.innerHTML = tempMapArtist + " - " + tempMapTitle;
         mapDifficulty.innerHTML = `Difficulty: <span style="font-weight: 700">${tempMapDiff}</span>`;
@@ -203,8 +211,8 @@ socket.onmessage = (event) => {
             togglePool(false);
         }, 7270);
     }
-    if (bestOfTemp !== data.tourney.manager.bestOF) {
-        bestOfTemp = data.tourney.manager.bestOF;
+    if (bestOfTemp !== data.tourney.bestOF) {
+        bestOfTemp = data.tourney.bestOF;
         containerLeft = document.getElementById("scoreContainerLeft");
         containerRight = document.getElementById("scoreContainerRight");
         containerLeft.innerHTML = "";
@@ -221,8 +229,8 @@ socket.onmessage = (event) => {
             containerRight.appendChild(scoreRight[counter]);
         }
     }
-    if (scoreLeftTemp !== data.tourney.manager.stars.left) {
-        scoreLeftTemp = data.tourney.manager.stars.left;
+    if (scoreLeftTemp !== data.tourney.totalScore.left) {
+        scoreLeftTemp = data.tourney.totalScore.left;
         for (var i = 0; i < Math.ceil(bestOfTemp / 2); i++) {
             if (i < scoreLeftTemp) {
                 scoreLeft[i].style.backgroundColor = "#fff";
@@ -232,8 +240,8 @@ socket.onmessage = (event) => {
         }
     }
 
-    if (scoreRightTemp !== data.tourney.manager.stars.right) {
-        scoreRightTemp = data.tourney.manager.stars.right;
+    if (scoreRightTemp !== data.tourney.totalScore.right) {
+        scoreRightTemp = data.tourney.totalScore.right;
         for (var i = 0; i < Math.ceil(bestOfTemp / 2); i++) {
             if (i < scoreRightTemp) {
                 scoreRight[Math.ceil(bestOfTemp / 2) - 1 - i].style.backgroundColor = "#fff";
@@ -243,24 +251,27 @@ socket.onmessage = (event) => {
         }
     }
 
-    if (team1 !== data.tourney.manager.teamName.left && team2 !== data.tourney.manager.teamName.right) {
-        if (data.tourney.manager.teamName.left !== "" && data.tourney.manager.teamName.right !== "" && tournamentDebugger === 0) {
-            team1 = data.tourney.manager.teamName.left;
-            team2 = data.tourney.manager.teamName.right;
-        } else {
-            team1 = "";
-            team2 = "";
+    if (team1 !== data.tourney.clients[0].team && team2 !== data.tourney.clients[2].team) {
+        if (tournamentDebugger === 0) {
+            team1 = data.tourney.clients[0].team;
+            team2 = data.tourney.clients[2].team;
         }
         avaSet = 0;
     }
 
-    if (teamNameLeftTemp !== data.tourney.manager.teamName.left) {
-        teamNameLeftTemp = data.tourney.manager.teamName.left;
+    if (teamNameLeftTemp !== data.tourney.team.left) {
+        teamNameLeftTemp = data.tourney.team.left;
         teamLeftName.innerHTML = teamNameLeftTemp;
     }
-    if (teamNameRightTemp !== data.tourney.manager.teamName.right) {
-        teamNameRightTemp = data.tourney.manager.teamName.right;
+    if (teamNameRightTemp !== data.tourney.team.right) {
+        teamNameRightTemp = data.tourney.team.right;
         teamRightName.innerHTML = teamNameRightTemp;
+    }
+
+    if (!avaSet && tournamentDebugger === 0) {
+        avaSet = 1;
+        setAvatar(avaLeft, team1);
+        setAvatar(avaRight, team2);
     }
 
     if (scoreVisibleTemp) {
@@ -268,15 +279,15 @@ socket.onmessage = (event) => {
         let accRight = 0.0;
 
         if (tournamentDebugger === 0) {
-            teamSize = data.tourney.ipcClients.length / 2;
+            teamSize = 2;
 
             data.tourney.ipcClients.forEach((client) => {
                 switch (client.team) {
                     case "left":
-                        accLeft += client.gameplay.accuracy;
+                        accLeft += client.play.accuracy;
                         break;
                     case "right":
-                        accRight += client.gameplay.accuracy;
+                        accRight += client.play.accuracy;
                         break;
                     default:
                         return;
@@ -338,19 +349,19 @@ socket.onmessage = (event) => {
         }
     }
 
-    if (data.tourney.manager.chat)
-        if (chatLen != data.tourney.manager.chat.length) {
+    if (data.tourney.chat)
+        if (chatLen != data.tourney.chat.length) {
             // There's new chats that haven't been updated
-            // console.log((data.tourney.manager.chat).length);
-            if (chatLen == 0 || (chatLen > 0 && chatLen > data.tourney.manager.chat.length)) {
+            // console.log((data.tourney.chat).length);
+            if (chatLen == 0 || (chatLen > 0 && chatLen > data.tourney.chat.length)) {
                 // Starts from bottom
                 chats.innerHTML = "";
                 chatLen = 0;
             }
 
             // Add the chats
-            for (var i = chatLen; i < data.tourney.manager.chat.length; i++) {
-                tempClass = data.tourney.manager.chat[i].team;
+            for (var i = chatLen; i < data.tourney.chat.length; i++) {
+                tempClass = data.tourney.chat[i].team;
 
                 // Chat variables
                 let chatParent = document.createElement("div");
@@ -365,11 +376,13 @@ socket.onmessage = (event) => {
                 let chatText = document.createElement("div");
                 chatText.setAttribute("class", "chatText");
 
-                chatTime.innerText = data.tourney.manager.chat[i].time;
-                chatName.innerText = data.tourney.manager.chat[i].name + ":\xa0";
-                chatText.innerText = data.tourney.manager.chat[i].messageBody;
+                chatTime.innerText = data.tourney.chat[i].time;
+                chatName.innerText = data.tourney.chat[i].name + ":\xa0";
+                chatText.innerText = data.tourney.chat[i].messageBody;
 
-                if (data.tourney.manager.chat[i].messageBody.includes("Next Pick")) {
+                // if (data.tourney.chat[i].messageBody.includes("Next Pick")) togglePool(true);
+
+                if (data.tourney.chat[i].messageBody.includes("Next Pick")) {
                     setTimeout(togglePool(true), 15000);
                 }
 
@@ -382,7 +395,7 @@ socket.onmessage = (event) => {
             }
 
             // Update the Length of chat
-            chatLen = data.tourney.manager.chat.length;
+            chatLen = data.tourney.chat.length;
 
             // Update the scroll so it's sticks at the bottom by default
             chats.scrollTop = chats.scrollHeight;
@@ -413,6 +426,14 @@ refresh.addEventListener("click", () => {
     });
     togglePool(true);
 });
+
+async function setAvatar(element, username) {
+    if (username !== null) {
+        element.style.backgroundImage = `url("ava/${username}.png")`;
+    } else {
+        element.style.backgroundImage = `url("static/default.png")`;
+    }
+}
 
 togglePool = (state) => {
     if (state) {

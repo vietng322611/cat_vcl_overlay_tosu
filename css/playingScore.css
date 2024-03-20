@@ -57,11 +57,11 @@
 #playScoreLeft {
 	color: var(--text-color);
 	text-align: right;
-	right: 50%;
+	right: 51%;
 }
 
 #playScoreRight {
 	color: var(--text-color);
 	text-align: left;
-	left: 50%;
+	left: 51%;
 }

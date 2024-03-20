@@ -1,0 +1,7 @@
+Usecase: obs-tourney
+Name: cat_vcl_overlay
+Author: BcraftMG
+CompatibleWith: tosu
+Resolution: 1920x1080
+authorLinks: https://github.com/xuanhaivptthn
+Notes: "<p>lmao lmao lmao<p>"
